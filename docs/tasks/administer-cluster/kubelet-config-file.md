@@ -34,15 +34,18 @@ is defined by the `KubeletConfiguration` struct
 The configuration file must be a JSON or YAML representation of the parameters
 in this struct. Make sure the Kubelet has read permissions on the file.
 
-Here is an example of what this file might look like:
+Here is an example of what this file might look like (and shows the difference between the values map\[string\]string, int32 and \[\]str in the [linked](https://github.com/kubernetes/kubernetes/blob/release-1.10/pkg/kubelet/apis/kubeletconfig/v1beta1/types.go) structure):
 ```
 kind: KubeletConfiguration
 apiVersion: kubelet.config.k8s.io/v1beta1
 evictionHard:
     memory.available:  "200Mi"
+maxPods: 120
+clusterDNS: ["dns-ip-01", "dns-ip-02"]
 ```
 
-In the example, the Kubelet is configured to evict Pods when available memory drops below 200Mi.
+In the example, the Kubelet is configured to evict Pods when available memory drops below 200Mi.  
+Also the maximum schedulable pods per kubelet are increased to 120 (default 110) and the cluster DNS servers are changed to "dns-ip-01" and "dns-ip-02" (relevant for on-premise installations).  
 All other Kubelet configuration values are left at their built-in defaults, unless overridden
 by flags. Command line flags which target the same value as a config file will override that value.
 
